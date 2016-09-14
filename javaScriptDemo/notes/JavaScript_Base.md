@@ -34,18 +34,20 @@
 
 * 基本数据类型
 	```
-	undefined
+	undefined(等同于void 0)
 	boolean
 	number(NaN,NaN不全等于任何数包括NaN;Infinity;一些浏览器不支持八进制)
-	object(null)
+	object(null,null为特殊的object对象,只有一个值null)
+	string
+	symbol(ES6新增)
 	function
 	```
 
 * 基本数据类型转换
 
-	转布尔类型
-	
-	| 其他类型   | 转换后结果 |
+	转boolean类型
+
+	| type      | result   |
 	|-----------|----------|
 	| 0/NaN     | false    |
 	| 其他number | true     |
@@ -54,10 +56,11 @@
 	| null      | false    |
 	| 其他object | true     |
 	| undefined | false    |
+	| function  | true     |
 
-	转字符串
+	转string类型
 
-	| 其他类型   | 转换后结果                   |
+	| type      | result                   |
 	|-----------|----------------------------|
 	| number    | 数字字符串/'NaN'             |
 	| boolean   | 'true'/'false'             |
@@ -65,17 +68,27 @@
 	| 其他object | 调用toString()或'undefined' |
 	| undefined | 'undefined'                |
 
-	转数字类型
+	转number类型
 
-	| 其他类型    | 转换后结果 |
+	| type       | result   |
 	|------------|----------|
-	| 数字字符串   | 数字值    |
-	| 非数字字符串 | NaN      |
+	| 数字字符串             | 数字值               |
+	| 非数字字符串         | NaN      |
 	| true       | 1        |
 	| false      | 0        |
 	| null       | 0        |
-	| 其他object  | NaN      |
+	| 其他object  | 调用toString()或NaN |
 	| undefined  | NaN      |
+
+	转object类型
+	
+	| type      | result             |
+	|-----------|--------------------|
+	| number    | new Number(value)  |
+	| string    | new String(value)  |
+	| boolean   | new Boolean(value) |
+	| null      | 抛出异常                                         |
+	| undefined | 抛出异常                                         |
 
 ##### Function对象
 
@@ -88,10 +101,12 @@
 	function fo(){
 		return 'fo';
 	}
+
 	// 方式2
 	var foos = fooo(){
 		return 'fooo';
 	}
+
 	// 方式3,构造函数
 	var foo = new Function(
 	'x', 'y', 'z', //arguments
@@ -119,6 +134,7 @@
 	```
 
 ##### JS对象
+所有对象继承自最顶层对象为Object
 
 * 对象公共属性
 
@@ -179,11 +195,15 @@
 			alert('foos');
 		}
 	}
-	var fo = new foos(); //创建对象实例
-	foos.doAction();
+	var fo = new foos(); // 创建对象实例
+	// fo.doAction(); 错误地调用方法
+	foos.doAction(); // 正确地调用方法
+	var fooo = foos(); //引用函数对象
+	fooo.doAction();
 	/**
-	* 函数名指向函数对象本身，表示调用函数时产生函数对象实例，该对象实例的名称就是函数名；
-	* 而this关键字指向被定义的对象，代表由new关键字创建的该对象的所有实例
+	* 函数名指向函数对象本身,表示调用函数时产生函数对象实例,该对象实例的名称就是函数名
+	* 而this关键字指向被定义的对象,代表由new关键字创建的该对象的所有实例;
+	* 严格模式下,this被设置为undefined;非严格模式下,this被设置指向全局对象
 	*/
 	```
 
@@ -308,6 +328,7 @@
 	var date3 = new Date(2009, 4, 2); // 创建2009-04-02的对象实例
 	var date4 = new Date(2009, 4, 2, 10, 20, 30, 400); // 创建2009-04-02 10:20:30 400的对象实例
 	```
+
 	属性和方法
 	```
 	getFullYear()                 获取年份数
@@ -327,7 +348,9 @@
 * Array对象(支持数组嵌套,不支持多维数组)
 
 	Array对象只有1个length属性,表示数组元素个数,该属性可读可写
+
 	若数组元素不连续,则length属性为元素最大索引加1
+
 	创建对象
 	```javascript
 	// 方式1
@@ -339,6 +362,7 @@
 	// 方式3
 	var arr3 = new Array(3, 4, 5);
 	```
+
 	属性和方法
 	```
 	contact(array)                 合并
@@ -413,6 +437,7 @@
 	var regex2 = /a\d/g;
 	```
 	属性和方法
+
 	```
 	global                         是否具有标志g
 	ignoreCase                     是否具有标志i
@@ -440,6 +465,7 @@
 	var f6 = new Boolean(NaN);
 	var f7 = new Boolean(undefined);
 	```
+
 	属性和方法
 	```
 	toString()                     转换为字符串
@@ -547,6 +573,7 @@ scrollWidth                      网页宽度(含滚动条)
 	onkeydown           按下按键事件
 	onkeyup             抬起按键事件
 	```
+
 * 事件流: 在页面接收事件的顺序
 
 	事件冒泡: 由最具体的元素接收, 然后逐级向上传播至最不具体的元素节点(文档)
