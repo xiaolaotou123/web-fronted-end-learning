@@ -1,38 +1,50 @@
 #### javascript基础
 
-##### 不支持JavaScrip
+
+##### 老版浏览器不支持JavaScrip
+
 * 使用`<!--与//-->`标记
 * 使用`<noscript>...</noscript>`标签
 
 ##### JS变量
+
 * 变量关键字var
 	变量无var关键字为全局变量
 * 变量作用域
-	局部变量 函数级作用域
-	ES6支持块级作用域,let关键字
+	1. 局部变量 函数级作用域
+	2. ES6支持块级作用域,let关键字
 
 ##### JS不常用操作符
-* delete
-	用来删除对象、对象的属性或者数组中的元素
-* with
-	简化对象的使用,执行效率很低
-	```javascript
-	with(objectName) {
+
+* delete:用来删除对象,对象的属性或者数组中的元素
+* with:简化对象的使用,执行效率很低
+
+	```
+	with (objectName) {
 		//objectName对象的语句块
 	}
 	```
 
 ##### JS基本数据类型
+
 * 获取基本数据类型的字符串值
-	`var baseType = typeof(foo);`
+	```
+	var baseType = typeof(foo);
+	```
+
 * 基本数据类型
- 	undefined
- 	boolean
- 	number(NaN,NaN不全等于任何数包括NaN;Infinity;一些浏览器不支持八进制)
- 	object(null)
+	```
+	undefined
+	boolean
+	number(NaN,NaN不全等于任何数包括NaN;Infinity;一些浏览器不支持八进制)
+	object(null)
 	function
+	```
+
 * 基本数据类型转换
+
 	转布尔类型
+	
 	| 其他类型   | 转换后结果 |
 	|-----------|----------|
 	| 0/NaN     | false    |
@@ -42,7 +54,9 @@
 	| null      | false    |
 	| 其他object | true     |
 	| undefined | false    |
+
 	转字符串
+
 	| 其他类型   | 转换后结果                   |
 	|-----------|----------------------------|
 	| number    | 数字字符串/'NaN'             |
@@ -50,7 +64,9 @@
 	| null      | 'null'                     |
 	| 其他object | 调用toString()或'undefined' |
 	| undefined | 'undefined'                |
+
 	转数字类型
+
 	| 其他类型    | 转换后结果 |
 	|------------|----------|
 	| 数字字符串   | 数字值    |
@@ -62,8 +78,11 @@
 	| undefined  | NaN      |
 
 ##### Function对象
+
 函数就是构造器对象
+
 * 创建函数
+
 	```javascript
 	// 方式1
 	function fo(){
@@ -79,7 +98,9 @@
 	'return x + y + z;' //method body
 	);
 	```
+
 * 属性和方法
+
 	```
 	arguments                    函数参数"数组"对象,不是Array对象;不能显示地创建,只有函数开始时才能使用
 	arguments.callee             当前函数的引用,用于递归
@@ -98,7 +119,9 @@
 	```
 
 ##### JS对象
+
 * 对象公共属性
+
 	```
 	length                        长度
 	prototype                     原型(函数对象拥有)
@@ -106,9 +129,11 @@
 	__proto__                     每个对象都有此隐藏属性,指向它所对应的原型对象(原型链基于此属性)
 	toString()                    对象(实例)值的字符串
 	valueOf()                     对象(实例)的值
-	isPrototypeOf()               判断1对象是否存在于另1对象的原型链中
+	isPrototypeOf(obj)            判断1对象是否存在于另1对象的原型链中
 	```
+
 * 创建对象
+
 	```javascript
 	// 使用object()构造函数
 	var foo = new Object();
@@ -141,8 +166,7 @@
 	// 构造函数
 	function foo() {
 		this.name = 'foo';
-		this.doAction = ';
-		doAction : function() {
+		this.doAction = function() {
 			alert('foo');
 		}
 	}
@@ -162,7 +186,9 @@
 	* 而this关键字指向被定义的对象，代表由new关键字创建的该对象的所有实例
 	*/
 	```
+
 * 属性和方法
+
 	```javascript
 	// 实例属性和方法
 	Date date = new Date(2016, 9, 13);
@@ -175,7 +201,9 @@
 	String.prototype.PI = Math.PI+'';
 	delete String.prototype.PI; // 删除原型属性
 	```
+
 * 原型继承
+
 	```javascript
 	function foo() {
 		this.name = 'foo';
@@ -195,7 +223,9 @@
 	```
 
 ##### JS全局对象
+
 * 属性
+
 	```
 	Infinity                      正无穷大
 	java                          java.*包层级的一个JavaPackage
@@ -203,7 +233,9 @@
 	Packages                      根JavaPackage对象
 	undefined                     未定义的值
 	```
+
 * 方法
+
 	```
 	decodeURI(URIstring)          解码某个编码的URI
 	decodeURIComponent(URIstring) 解码一个编码的URI组件
@@ -222,7 +254,9 @@
 	```
 
 ##### JS内置对象
+
 * String对象
+
 	创建对象
 	```javascript
 	var str = new String('foo'); // 方式1
@@ -261,7 +295,9 @@
 	sup()方法： 将字符串显示为上标,返回字符串
 	link(url)  为字符串对象添加超链接
 	```
+
 * Date对象
+
 	创建对象
 	```javascript
 	var currentDate = new Date(); // 创建当前对象实例
@@ -287,7 +323,9 @@
 	setFullYear(yyyy, MM, dd)     设置具体日期
 	setDate(date)                 设置日期
 	```
+
 * Array对象(支持数组嵌套,不支持多维数组)
+
 	Array对象只有1个length属性,表示数组元素个数,该属性可读可写
 	若数组元素不连续,则length属性为元素最大索引加1
 	创建对象
@@ -324,7 +362,9 @@
 	toLocaleString()               转换为本地格式字符串
 	valueOf()                      返回数组对象原始值
 	```
+
 * Math对象
+
 	```
 	round(number)                  四舍五入
 	random()                       取0~1之间随机数
@@ -335,7 +375,9 @@
 	floor(number)                  向下取整
 	pow(a, b)                      a的b次方
 	```
+
 * Number对象
+
 	创建对象
 	```javascript
 	var num1 = new Number(12);
@@ -359,7 +401,9 @@
 	toPrecision(num)               值超出num位指定位数时将其转换为指数计数法,默认toString(),位数1~21
 	valueOf()                      获取Number对象的数字值
 	```
+
 * RegExp对象
+
 	创建对象
 	```javascript
 	/**
@@ -379,7 +423,9 @@
 	test(str)                      是否匹配字符串
 	compile(regex, modifier)       用于在脚本执行过程中编译,改变和重新编译正则表达式
 	```
+
 * Boolean对象
+
 	创建对象
 	```javascript
 	// 对象值为true
@@ -401,7 +447,9 @@
 	```
 
 ##### BOM
+
 * window对象:当前浏览器窗口
+
 	```
 	全局变量是window对象的属性,全局函数是window对象的方法
 	innerHeight                    浏览器窗口颞部高度
@@ -421,13 +469,17 @@
 	setTimeout(code, milliSeconds) 一段毫秒数后执行一次一段JS代码
 	clearTimeout(id_of_settimeout) 清除一段毫秒数后执行一次一段JS代码
 	```
+
 * history对象
+
 	```
 	back()                         后退
 	forward()                      前进
 	go(number)                     进入某个页面
 	```
+
 * location对象
+
 	```
 	hostname                       主机域名
 	pathname                       当前页面路径和文件名
@@ -436,7 +488,9 @@
 	href                           当前页面url
 	assign(url)                    加载新文档
 	```
+
 * screen对象
+
 	```
 	availWidth                     可用屏幕宽度
 	availHeight                    可用屏幕高度
@@ -445,6 +499,7 @@
 	```
 
 ##### DOM操作(document)
+
 ```
 style                            样式属性
 className                        类名
@@ -476,7 +531,9 @@ scrollWidth                      网页宽度(含滚动条)
 ```
 
 ##### JS事件
+
 * JS事件
+
 	```
 	onclick             单击事件
 	onmouseover         鼠标经过事件
@@ -491,12 +548,15 @@ scrollWidth                      网页宽度(含滚动条)
 	onkeyup             抬起按键事件
 	```
 * 事件流: 在页面接收事件的顺序
+
 	事件冒泡: 由最具体的元素接收, 然后逐级向上传播至最不具体的元素节点(文档)
 	事件捕获: 最不具体的节点先接收事件, 而最具体的节点最后接收事件
+
 * 事件处理
-	1.HTML事件处理: 直接添加到HTML结构中
-	2.DOM0级事件处理: 把一个函数赋值给一个事件处理程序属性(会被覆盖)
-	3.DOM2级事件处理: (不会被覆盖)
+
+	1. HTML事件处理: 直接添加到HTML结构中
+	2. DOM0级事件处理: 把一个函数赋值给一个事件处理程序属性(会被覆盖)
+	3. DOM2级事件处理: (不会被覆盖)
 	```
 	addEventListener("type", "function", "useCapture")
 	useCapture:true: 事件捕获; flase: 事件冒泡(默认)
@@ -521,8 +581,10 @@ scrollWidth                      网页宽度(含滚动条)
 		alert("demo");
 	}
 	```
+
 * 事件对象(event): 再出发DOM事件时会产生一个对象
-	1.type: 事件类型
-	2.target: 事件目标
-	3.stopPropagation(): 阻止事件冒泡
-	4.preventDefault():  阻止事件默认行为
+
+	1. type: 事件类型
+	2. target: 事件目标
+	3. stopPropagation(): 阻止事件冒泡
+	4. preventDefault():  阻止事件默认行为
