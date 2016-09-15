@@ -204,6 +204,7 @@
 	* 函数名指向函数对象本身,表示调用函数时产生函数对象实例,该对象实例的名称就是函数名
 	* 而this关键字指向被定义的对象,代表由new关键字创建的该对象的所有实例;
 	* 严格模式下,this被设置为undefined;非严格模式下,this被设置指向全局对象
+	* 回调函数的this由回调函数调用者决定的
 	*/
 	```
 
@@ -526,35 +527,95 @@
 
 ##### DOM操作(document)
 
-```
-style                            样式属性
-className                        类名
-innerHTML                        DOM的HTML文档
-innerText                        DOM的文本文档,FireFox不支持
-getElementById(id)               根据id获取元素
-getElementsByName(name)          根据name获取元素
-getElementsByTagName(tagName)    根据标签名获取元素
-getAttribute(key)                获取属性
-setAttribute(key, value)         设置属性
-body                             网页body
-documentElement                  文本元素
-clientWidth                      可见区域宽度
-clientHeight                     可见区域高度
-childNodes                       子节点
-parentNode                       父节点
-nodeType                         节点类型
-nodeName                         节点名
-write(string)                    向网页输出字符串
-createElement(tagName)           创建元素节点
-createTextNode(content)          创建内容为content的文本节点
-insertBefore(newDomObj, oldDomObj) 在某节点之前添加新节点
-appendChild(domObj)              添加子节点
-removeChild(domObj)              移除子节点
-offsetHeight                     网页高度(不含滚动条)
-offsetWidth                      网页宽度(不含滚动条)
-scrollHeight                     网页高度(含滚动条)
-scrollWidth                      网页宽度(含滚动条)
-```
+* 常用的
+
+	```
+	style                            样式属性
+	className                        类名
+	innerHTML                        DOM的HTML文档
+	innerText                        DOM的文本文档,FireFox不支持
+	getElementById(id)               根据id获取元素
+	getElementsByName(name)          根据name获取元素
+	getElementsByTagName(tagName)    根据标签名获取元素
+	getAttribute(key)                获取属性
+	setAttribute(key, value)         设置属性
+	body                             网页body
+	documentElement                  文本元素
+	clientWidth                      可见区域宽度
+	clientHeight                     可见区域高度
+	childNodes                       子节点
+	parentNode                       父节点
+	nodeType                         节点类型
+	nodeName                         节点名
+	write(string)                    向网页输出字符串
+	createElement(tagName)           创建元素节点
+	createTextNode(content)          创建内容为content的文本节点
+	insertBefore(newDomObj, oldDomObj) 在某节点之前添加新节点
+	appendChild(domObj)              添加子节点
+	removeChild(domObj)              移除子节点
+	offsetHeight                     网页高度(不含滚动条)
+	offsetWidth                      网页宽度(不含滚动条)
+	scrollHeight                     网页高度(含滚动条)
+	scrollWidth                      网页宽度(含滚动条)
+	```
+
+* 追加:JavaScript获取各种高度和宽度
+
+	```
+	网页可见区域宽  document.body.clientWidth
+	网页可见区域高  document.body.clientHeight
+	网页可见区域宽  document.body.offsetWidth(包括边线的宽)
+	网页可见区域高  document.body.offsetHeight(包括边线的宽)
+	网页正文全文宽  document.body.scrollWidth
+	网页正文全文高  document.body.scrollHeight
+	网页被卷去的高  document.body.scrollTop
+	网页被卷去的左  document.body.scrollLeft
+	网页正文部分上  window.screenTop
+	网页正文部分左  window.screenLeft
+	屏幕分辨率的高  window.screen.height
+	屏幕分辨率的宽  window.screen.width
+	屏幕可用工作区高度  window.screen.availHeight
+	屏幕可用工作区宽度 window.screen.availWidth
+	 
+	clientWidth 对象看到的宽度(不含边线,即border)
+	scrollWidth 对象实际内容的宽度(若无padding,那就是边框之间距离;如有padding,就是左padding到右padding之间距离)
+	offsetWidth 指对象自身的宽度(含边线,如滚动条的占用的宽,值会随着内容的输入而不断改变)
+	
+	scrollHeight 获取对象的滚动高度。  
+	scrollLeft   设置或获取位于对象左边界和窗口中目前可见内容的最左端之间的距离
+	scrollTop    设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离
+	scrollWidth  获取对象的滚动宽度
+	offsetHeight 获取对象相对于版面或由父坐标 offsetParent 属性指定的父坐标的高度
+	offsetLeft   获取对象相对于版面或由 offsetParent 属性指定的父坐标的计算左侧位置
+	offsetTop    获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置
+	 
+	event.clientX 设置或获取鼠标指针位置相对于当前窗口的 x 坐标，其中客户区域不包括窗口自身的控件和滚动条
+	event.clientY 设置或获取鼠标指针位置相对于当前窗口的 y 坐标，其中客户区域不包括窗口自身的控件和滚动条
+	event.offsetX 设置或获取鼠标指针位置相对于触发事件的对象的 x 坐标
+	event.offsetY 设置或获取鼠标指针位置相对于触发事件的对象的 y 坐标
+	event.screenX 设置或获取获取鼠标指针位置相对于用户屏幕的 x 坐标
+	event.screenY 设置或获取鼠标指针位置相对于用户屏幕的 y 坐标 
+	x设置或获取鼠标指针位置相对于父文档的 x像素坐标(亦即相对于当前窗口)
+	y设置或获取鼠标指针位置相对于父文档的 y像素坐标(亦即相对于当前窗口)
+	
+	document.documentElement.scrollTop 垂直方向滚动的值
+	event.clientX+document.documentElement.scrollTop 相对文档的水平座标+垂直方向滚动的量
+	要获取当前页面的滚动条纵坐标位置，用：document.documentElement.scrollTop;
+	而不是：document.body.scrollTop;documentElement 对应的是 html 标签，而 body 对应的是 body 标签
+	 
+	以上主要指IE之中，FireFox差异如下:
+	IE6.0、FF1.06+:
+	clientWidth = width + padding
+	clientHeight = height + padding
+	offsetWidth = width + padding + border
+	offsetHeight = height + padding + border
+	IE5.0/5.5:
+	clientWidth = width - border
+	clientHeight = height - border
+	offsetWidth = width
+	offsetHeight = height
+	(需要提一下: CSS中的margin属性,与clientWidth、offsetWidth、clientHeight、offsetHeight均无关)
+	```
 
 ##### JS事件
 
