@@ -19,7 +19,7 @@
 * delete:用来删除对象,对象的属性或者数组中的元素
 * with:简化对象的使用,执行效率很低
 
-	```
+	```javascript
 	with (objectName) {
 		//objectName对象的语句块
 	}
@@ -44,7 +44,6 @@
 	```
 
 * 基本数据类型转换
-
 	转boolean类型
 
 	| type      | result   |
@@ -90,7 +89,7 @@
 	| null      | 抛出异常                                         |
 	| undefined | 抛出异常                                         |
 
-##### Function对象
+##### 函数对象(Function产生的)
 
 函数就是构造器对象
 
@@ -145,6 +144,7 @@
 	__proto__                     每个对象都有此隐藏属性,指向它所对应的原型对象(原型链基于此属性)
 	toString()                    对象(实例)值的字符串
 	valueOf()                     对象(实例)的值
+	toLocalString()               对象(实例)本地化的值
 	isPrototypeOf(obj)            判断1对象是否存在于另1对象的原型链中
 	```
 
@@ -241,6 +241,23 @@
 	var subFooIns = new subFoo();
 	alert(subFooIns.name);
 	subFooIns.doAction();
+	```
+
+* Namespace
+
+	```javascript
+	function namespace(namespaceString) {
+		var temp = []; // Declare a empty array
+		var array = namespaceString.split('.');
+		for (var i=0; i<array.length; i++) {
+			temp.push(array[i]);
+			// Add new objects to window object
+			// eval('window.' + temp.join('.') + '=function(){}');
+			eval('window.' + temp.join('.') + '={}');
+		}
+	}
+	
+	var _namespace = namespace('com.maximum.demo');
 	```
 
 ##### JS全局对象
@@ -604,7 +621,7 @@
 	而不是：document.body.scrollTop;documentElement 对应的是 html 标签，而 body 对应的是 body 标签
 	 
 	以上主要指IE之中，FireFox差异如下:
-	IE6.0、FF1.06+:
+	IE6.0/FF1.06+:
 	clientWidth = width + padding
 	clientHeight = height + padding
 	offsetWidth = width + padding + border
@@ -635,13 +652,11 @@
 	onkeyup             抬起按键事件
 	```
 
-* 事件流: 在页面接收事件的顺序
-
-	事件冒泡: 由最具体的元素接收, 然后逐级向上传播至最不具体的元素节点(文档)
+* 事件流: 在页面接收事件的顺序  
+	事件冒泡: 由最具体的元素接收, 然后逐级向上传播至最不具体的元素节点(文档)  
 	事件捕获: 最不具体的节点先接收事件, 而最具体的节点最后接收事件
 
-* 事件处理
-
+* 事件处理  
 	1. HTML事件处理: 直接添加到HTML结构中
 	2. DOM0级事件处理: 把一个函数赋值给一个事件处理程序属性(会被覆盖)
 	3. DOM2级事件处理: (不会被覆盖)
@@ -671,7 +686,6 @@
 	```
 
 * 事件对象(event): 再出发DOM事件时会产生一个对象
-
 	1. type: 事件类型
 	2. target: 事件目标
 	3. stopPropagation(): 阻止事件冒泡

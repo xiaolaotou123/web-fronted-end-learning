@@ -1,4 +1,5 @@
 ### js技巧代码
+
 * 1.文本框焦点问题
 ```
 onblur: 离焦事件
@@ -10,27 +11,33 @@ onselect: 文本选中时触发事件
 <h5>点击时文字消失，失去焦点时文字再出现</h5>
 <input type="text" value="example" onfocus="if (value=='example') {value=''}" onblur="if (value=='') {value='example'}"/>
 ```
+
 * 2.鼠标移入移出时颜色变化
 ```javascript
 <input type="button" value="找吧" onmouseout="this.style.color='blue'" onmouseover="this.style.color='red'"/>
 ```
+
 * 3.平面按钮
 ```javascript
 <input type="submit" name="submit" value="订阅" style="border:1px solid #666666; height:17px; width:25pt; font-size:9pt; background-color:#e8e8ff; color:#666666"/>
 ```
+
 * 4.按钮颜色变化
 ```javascript
 <input type="text" name="nick" style="border:1px solid #666666; font-size:9pt; height:17px;
 background-color:#f4f4ff; color:#ff6600;" size="15" maxlength="16"/>
 ```
+
 * 5.平面输入框
 ```javascript
 <input type="text" size="20" style="border-style:solid; border-width:1;"/>
 ```
+
 * 6.使窗口变成指定的大小
 ```javascript
 window.resizeTo(300,283);
 ```
+
 * 7.使文字上下滚动
 ```javascript
 <marquee direction="up" scrollamount="1" scrolldelay="100" onmouseover="this.stop()" onmouseout="this.start()"
@@ -40,10 +47,12 @@ height="60">
 <!-- end head_scrolltext -->
 </marquee>
 ```
+
 * 8.状态栏显示该页状态
 ```javascript
 <base onmouseover="window.status='显示网站状态'; return true"/>
 ```
+
 * 9.可以点击文字实现radio选项的选定
 ```javascript
 <input type="radio" name="regtype" value="A03" id="A03"/><label for="A03">情侣: 一次注册两个帐户</label>
