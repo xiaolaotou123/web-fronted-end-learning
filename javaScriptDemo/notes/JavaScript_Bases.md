@@ -89,9 +89,11 @@
 	| null      | 抛出异常                                         |
 	| undefined | 抛出异常                                         |
 
-##### 函数对象(Function产生的)
-
-函数就是构造器对象
+##### 函数(构造函数)对象(new Function()产生的)  
+Function,Object由new Function()产生的  
+Object是根构造函数  
+函数对象指向其prototype
+所有构造器都来自于 `Function.prototype`(包括`Object`及`Function`自身),都继承Function.prototype的属性及方法
 
 * 创建函数
 
@@ -125,27 +127,51 @@
 	对于函数来说,此属性只有在函数执行时才定义.
 	若函数是由顶层调用的,则caller包含的就是null;
 	若在字符串上下文中使用此属性,则结果和toString()一样,显示的是函数的反编译文本
-	prototype                    函数对象的原型属性,必要的
+	prototype                    函数对象的原型属性,必要的(默认prototype={})
 	constructor                  构造方法
 	toString()                   获取函数定义的代码
 	valueOf()                    获取函数定义的代码
-	Function.prototype函数对象是个例外,无prototype属性
+	name
+	bind()
+	call()
+	apply()
 	```
 
 ##### JS对象
-所有对象继承自最顶层对象为Object
+**prototype**  
+函数对象特有的prototype指向其原型对象  
+原型对象指向其实例对象  
+原型对象为普通对象,但Function.prototype为函数对象  
+typeof(Function.prototype)=='function' 
+Function.prototype不存在prototype属性     
+Function.prototype.prototype==undefined  
+函数对象(构造函数)创建实例对象时并赋值其prototype对象  
+原型对象被重写后,实例对象构造器的原型对象不等于原型链的原型对象;原型链的原型对象等于被重写的    
+**constructor**  
+实例对象(new产生的普通对象,原型对象)的constructor指向其函数对象  
+函数对象的constructor为Function(包括Function它自身)  
+**\_\_proto\_\_**  
+普通对象的原型链指向其原型对象  
+Object.\_\_proto\_\_===Function.prototype  
+Function.\_\_proto\_\_===Function.prototype(Function是Function的实例)  
+函数对象的原型链为Function.prototype,是一个空函数  
+Function.prototype.\_\_proto\_\_===Object.prototype  
+Object.prototype.\_\_proto\_\_==null  
 
 * 对象公共属性
 
 	```
-	length                        长度
-	prototype                     原型(函数对象拥有)
-	constructor                   构造方法
-	__proto__                     每个对象都有此隐藏属性,指向它所对应的原型对象(原型链基于此属性)
+	length                        长度(不可被枚举,遍历)
+	prototype                     原型(函数对象拥有此属性并指向其原型对象)
+	constructor                   构造函数,该实例(普通对象,原型对象)指向其函数对象
+	__proto__                     原型链,指向它所对应的原型对象
 	toString()                    对象(实例)值的字符串
 	valueOf()                     对象(实例)的值
 	toLocalString()               对象(实例)本地化的值
-	isPrototypeOf(obj)            判断1对象是否存在于另1对象的原型链中
+	isPrototypeOf(ins_obj)        判断其原型链的对象是否存在于指定对象实例中
+	hasOwnProperty(property)      判断一个属性是否定是对象自身定义的
+	propertyIsEnumerable(property)判断一个属性是否属于某个对象的(此属性必须属于实例,且不属于原型,此属性可枚举,通过for-in遍历出来)
+	Object.getOwnPropertyNames(obj)获取对象所有属性名,不包括prototype中的
 	```
 
 * 创建对象
@@ -232,16 +258,89 @@
 			window.document.write('foo');
 		}
 	}
+	
 	function subFoo() {
 		this.lable = 'subFoo';
 	}
-	// subFoo.prototype = foo().prototype;
+	
+	// subFoo.prototype = foo.prototype;
 	subFoo.prototype = new foo(); //继承foo对象
+	
 	// Test
 	var subFooIns = new subFoo();
-	alert(subFooIns.name);
+	alert(subFooIns.name + ' ' + subFooIns.lable);
 	subFooIns.doAction();
 	```
+
+* callback(回调函数)
+	```javascript
+	function ajax(ajaxJSON) {
+		var xhr = getXHR(); // Get AJAX object
+		// Handle the event of onreadystatechange
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) {
+				if (xhr.status==200 || xhr.status==304) {
+					ajaxJSON.callback(xhr.responseText);
+				}
+			}
+		}
+		// Open connection
+		xhr.open(ajaxJSON.method, ajaxJSON.url, true);
+		// Set request header
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		// Send request
+		xhr.send('data=' + ajaxJSON.data);
+	}
+	
+	function getXHR() {
+		var xhr;
+		try { // FireFox, Opera 8.0+, Safari
+			xhr = new XMLHttpRequest();
+		} catch (e) {
+			try { // IE
+				xhr = new ActiveXObject('Msxml2.XMLHTTP');
+			} catch (e) {
+				try {
+					xhr = new ActiveXObject('Microsoft.XMLHTTP');
+				} catch (e) {
+				}
+			}
+		}
+		return xhr;
+	}
+	```
+
+* Closure(闭包)  
+在函数内部定义的函数,在外部使用  
+使用场景: 继承的封装; 匿名函数
+	```javascript
+	(function(window) {
+		function Person() {
+			return {
+				setName : setName,
+				getName : getName
+			}
+		}
+		// Public functions
+		function setName(name) {
+			this.name = name;
+		}
+		function getName() {
+			return this.name;
+		}
+		// Private functions
+		function demo() {}
+		function demoo() {}
+		// Add attribute of Person to window object
+		window.Person = Person;
+	})(window);
+	
+	// Test
+	var person = window.Person();
+	var name = person.setName('wong');
+	alert(name);
+	```
+
 
 * Namespace
 
@@ -258,6 +357,70 @@
 	}
 	
 	var _namespace = namespace('com.maximum.demo');
+	```
+
+* 框架代码
+	```javascript
+	/**
+	 * 在extend函数内部定义一个函数,把传递进来的json对象的每一个key,value值动态地添加到内部函数的prototype中
+	 */
+	namespace('com.maximum.demo');
+	com.maximum.demo.extend = function (json) {
+		// Declare a function as constructor
+		function F() {
+		}
+		// Traverse json object
+		for (var i in json) {
+			F.prototype[i] = json[i];
+		}
+		return F;
+	}
+	
+	// Test
+	var Person = com.maximum.demo.extend({
+		name : 'wong';
+		age : 999;
+	});
+	var person = new Person();
+	alert(person.name + ' ' + person.age);
+	```
+	
+	```javascript
+	/**
+	 * 对象扩展
+	 */
+	namespace('com.maximum.demo')
+	com.maximum.demo.extend = function(destination, source) {
+		if (typeof(source) == 'object') {
+			if (typeof(destination) == 'object') {
+				for (var i in source) {
+					destination[i] = source[i];
+				}				
+			} else if (typeof(destination) == 'function') {
+				for (var i in source) {
+					destination.prototype[i] = source[i];
+				}					
+			}
+		}
+		return destination;
+	}
+	
+	// Test
+	var destination = com.maximum.demo.extend({
+		type : 'destination';
+	}, {
+		name : 'source';
+	});
+	alert(destination.);
+	
+	function Target() {
+	
+	}
+	com.maximum.demo.extend(Target, {
+		name : 'source';
+	});
+	var target = new Target();
+	alert(target.name);
 	```
 
 ##### JS全局对象
@@ -363,11 +526,10 @@
 	setDate(date)                 设置日期
 	```
 
-* Array对象(支持数组嵌套,不支持多维数组)
-
-	Array对象只有1个length属性,表示数组元素个数,该属性可读可写
-
-	若数组元素不连续,则length属性为元素最大索引加1
+* Array对象(支持数组嵌套,不支持多维数组)  
+	Array对象只有1个length属性,表示数组元素个数,该属性可读可写  
+	若数组元素不连续,则length属性为元素最大索引加1  
+	Array.prototype==[]  
 
 	创建对象
 	```javascript
@@ -675,12 +837,12 @@
 	var dom = document.getElementById("dom");
 	if (dom.addEventListener) {
 		dom.addEventListener("click", demo);
-	}else if(dom.attachEvent) {
+	} else if (dom.attachEvent) {
 		dom.attachEvent("click", demo);
-	}else{
+	} else {
 		dom.onclick = demo();
 	}
-	function demo(){
+	function demo() {
 		alert("demo");
 	}
 	```
