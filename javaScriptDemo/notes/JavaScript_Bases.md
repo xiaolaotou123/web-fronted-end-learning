@@ -95,7 +95,8 @@ Object是根构造函数
 函数对象指向其prototype
 所有构造器都来自于 `Function.prototype`(包括`Object`及`Function`自身),都继承Function.prototype的属性及方法
 
-* 创建函数
+* 创建函数  
+ 	 函数都有返回值,若无返回值,则返回undefined
 
 	```javascript
 	// 方式1
@@ -135,6 +136,14 @@ Object是根构造函数
 	bind()
 	call()
 	apply()
+	```
+
+* 自执行函数(IIFE)
+
+	```javascript
+	(function() {
+		// Your awesome code here
+	}());
 	```
 
 ##### JS对象
@@ -214,21 +223,22 @@ Object.prototype.\_\_proto\_\_==null
 	}
 	var f = new foo(); // 创建对象实例
 	f.doAction();
-
+	
+	// 函数对象
 	function foos() {
 		foos.name = 'foos';
 		foos.doAction = function() {
 			alert('foos');
 		}
-	}
+	}	
 	var fo = new foos(); // 创建对象实例
 	// fo.doAction(); 错误地调用方法
 	foos.doAction(); // 正确地调用方法
 	var fooo = foos(); //引用函数对象
 	fooo.doAction();
 	/**
-	* 函数名指向函数对象本身,表示调用函数时产生函数对象实例,该对象实例的名称就是函数名
-	* 而this关键字指向被定义的对象,代表由new关键字创建的该对象的所有实例;
+	* 函数名指向函数对象本身,表示调用函数时产生函数对象实例
+	* this关键字指向被定义的对象,代表由new关键字创建的该对象的所有实例;
 	* 严格模式下,this被设置为undefined;非严格模式下,this被设置指向全局对象
 	* 回调函数的this由回调函数调用者决定的
 	*/
